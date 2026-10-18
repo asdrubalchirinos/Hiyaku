@@ -1,0 +1,54 @@
+---
+import { SITE_TITLE } from "../consts";
+import { withBase } from "../utils/paths";
+
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="footer-content">
+    <div class="copyright">
+      &copy; {year} {SITE_TITLE}. Todos los derechos reservados.
+    </div>
+    <div class="author">
+      Escrito por Bea · sobre el oficio de Growth Partner
+    </div>
+    <div class="footer-links">
+      <a href={withBase("/rss.xml")} aria-label="Suscribirse al feed RSS">RSS</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    padding: 2em 1em 6em;
+    background: linear-gradient(rgb(var(--gray-light)) 0%, rgb(var(--white)) 100%);
+    color: rgb(var(--gray));
+    text-align: center;
+    margin-top: 4rem;
+  }
+  .footer-content {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .copyright {
+    margin-top: 1em;
+    font-size: 0.9em;
+  }
+  .author {
+    margin-top: 0.5em;
+    font-size: 0.8em;
+  }
+  .footer-links {
+    margin-top: 0.75em;
+    font-size: 0.85em;
+  }
+  .footer-links a {
+    color: rgb(var(--gray));
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+  .footer-links a:hover {
+    color: rgb(var(--gray-dark));
+  }
+</style>

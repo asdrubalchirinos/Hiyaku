@@ -1,0 +1,26 @@
+---
+import ShareActions from "./ShareActions.astro";
+import PostTags from "./PostTags.astro";
+
+interface Props {
+  url: string;
+  title: string;
+  tags: string[];
+}
+
+const { url, title, tags } = Astro.props;
+---
+
+<footer class="post-footer">
+  <ShareActions url={url} title={title} />
+  <PostTags tags={tags} />
+</footer>
+
+<style>
+  .post-footer {
+    max-width: 720px;
+    width: 100%;
+    margin: auto;
+    padding: 0 1em 2em;
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE } from "../consts";
+import { withBase } from "../utils/paths";
+---
+
+<BaseLayout
+  title={`Página no encontrada - ${SITE_TITLE}`}
+  description="Esta página no existe en Hiyaku."
+>
+  <section class="not-found">
+    <h1>Esta página no existe</h1>
+    <p>Puede que el enlace esté mal o que el artículo aún no se haya publicado.</p>
+    <p><a href={withBase("/")}>Volver a la portada</a></p>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    margin: 4rem auto;
+    max-width: 36rem;
+    text-align: center;
+  }
+</style>

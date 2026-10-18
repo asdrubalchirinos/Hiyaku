@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Hiyaku">
+  <rect width="64" height="64" rx="14" fill="#A34A24"/>
+  <path d="M14 42c8-2 14-10 16-20 2 8 6 14 20 18" fill="none" stroke="#FDF8F0" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="46" cy="20" r="5" fill="#FDF8F0"/>
+</svg>

@@ -1,0 +1,157 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Sidebar from "../../../components/Sidebar.astro";
+import DraftBadge from "../../../components/DraftBadge.astro";
+import Pagination from "../../../components/Pagination.astro";
+import { AUDIENCE_TAGS, BLOG_PAGE_SIZE, SITE_TITLE } from "../../../consts";
+import { formatDate, getPublishedPosts, sortByDate } from "../../../utils/posts";
+import { withBase } from "../../../utils/paths";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const posts = sortByDate(await getPublishedPosts());
+  const uniqueTags = [...new Set(posts.flatMap((post) => post.data.tags))];
+
+  return uniqueTags.flatMap((tag) => {
+    const filtered = posts.filter((post) => post.data.tags.includes(tag));
+    return paginate(filtered, {
+      pageSize: BLOG_PAGE_SIZE,
+      params: { tag },
+    });
+  });
+};
+
+interface Props {
+  page: Page<CollectionEntry<"blog">>;
+}
+
+const { page } = Astro.props;
+const { tag } = Astro.params;
+const isAudience = AUDIENCE_TAGS.includes(tag as (typeof AUDIENCE_TAGS)[number]);
+const audienceLabel =
+  tag === "growth-partners"
+    ? "artículos para otros Growth Partners"
+    : tag === "negocios"
+      ? "artículos para dueños de negocio que buscan un Growth Partner"
+      : null;
+---
+
+<BaseLayout
+  title={`Etiqueta: ${tag} - ${SITE_TITLE}`}
+  description={`Posts etiquetados con ${tag}`}
+>
+  <div class="container">
+    <div class="content">
+      <h1>Etiqueta: <span>#{tag}</span></h1>
+      {isAudience && audienceLabel && <p class="audience-note">{audienceLabel}</p>}
+      <ul class="post-list">
+        {
+          page.data.map((post) => (
+            <li>
+              <a href={withBase(`/blog/${post.id}/`)}>
+                <div class="post-content">
+                  <h2 class="title">{post.data.title}</h2>
+                  <p class="date">{formatDate(post.data.pubDate, "short")}</p>
+                  {post.data.subtitle && <p class="subtitle">{post.data.subtitle}</p>}
+                </div>
+                {post.data.heroImage && (
+                  <div class="post-image">
+                    <div class="image-wrapper">
+                      <img
+                        width={120}
+                        height={120}
+                        src={withBase(post.data.heroImage)}
+                        alt=""
+                      />
+                      <DraftBadge draft={post.data.draft} />
+                    </div>
+                  </div>
+                )}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <Pagination
+        prev={page.url.prev}
+        next={page.url.next}
+        currentPage={page.currentPage}
+        lastPage={page.lastPage}
+      />
+    </div>
+    <aside>
+      <Sidebar />
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .container {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .content {
+    flex: 2;
+  }
+  aside {
+    flex: 1;
+  }
+  h1 span {
+    color: rgb(var(--accent));
+  }
+  .audience-note {
+    color: rgb(var(--gray));
+    margin-top: 0;
+  }
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 2rem;
+  }
+  .post-list li {
+    margin-bottom: 2rem;
+  }
+  .post-list a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+  .post-content {
+    flex: 1;
+  }
+  .post-image .image-wrapper {
+    position: relative;
+  }
+  .post-image img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
+  .post-list .title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+  }
+  .post-list .date {
+    color: rgb(var(--gray));
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  .post-list .subtitle {
+    color: rgb(var(--gray-dark));
+    font-size: 1rem;
+    margin: 0;
+  }
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+  }
+</style>

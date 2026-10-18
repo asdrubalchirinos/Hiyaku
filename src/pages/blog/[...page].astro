@@ -1,0 +1,120 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import DraftBadge from "../../components/DraftBadge.astro";
+import Pagination from "../../components/Pagination.astro";
+import { BLOG_PAGE_SIZE, SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
+import { formatDate, getPublishedPosts, sortByDate } from "../../utils/posts";
+import { withBase } from "../../utils/paths";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const sortedPosts = sortByDate(await getPublishedPosts());
+  return paginate(sortedPosts, { pageSize: BLOG_PAGE_SIZE });
+};
+
+interface Props {
+  page: Page<CollectionEntry<"blog">>;
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title={`Blog - ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+  <div class="container">
+    <div class="content">
+      <h1>Blog</h1>
+      <ul class="post-list">
+        {
+          page.data.map((post) => (
+            <li>
+              <a href={withBase(`/blog/${post.id}/`)}>
+                {post.data.heroImage && (
+                  <div class="image-wrapper">
+                    <img
+                      width={720}
+                      height={360}
+                      src={withBase(post.data.heroImage)}
+                      alt=""
+                    />
+                    <DraftBadge draft={post.data.draft} />
+                  </div>
+                )}
+                <h2 class="title">{post.data.title}</h2>
+                {post.data.subtitle && <p class="subtitle">{post.data.subtitle}</p>}
+                <p class="date">{formatDate(post.data.pubDate, "short")}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <Pagination
+        prev={page.url.prev}
+        next={page.url.next}
+        currentPage={page.currentPage}
+        lastPage={page.lastPage}
+      />
+    </div>
+    <aside>
+      <Sidebar />
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .container {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .content {
+    flex: 2;
+  }
+  aside {
+    flex: 1;
+  }
+  .post-list {
+    list-style: none;
+    padding: 0;
+  }
+  .post-list li {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgb(var(--gray-light));
+    padding-bottom: 1.5rem;
+  }
+  .post-list li:last-child {
+    border-bottom: none;
+  }
+  .post-list .image-wrapper {
+    position: relative;
+  }
+  .post-list img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+  .post-list a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .post-list .title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .post-list .subtitle {
+    color: rgb(var(--gray-dark));
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  .post-list .date {
+    color: rgb(var(--gray));
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+  }
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+  }
+</style>

@@ -1,0 +1,125 @@
+---
+interface Props {
+  prev?: string;
+  next?: string;
+  currentPage: number;
+  lastPage: number;
+}
+
+const { prev, next, currentPage, lastPage } = Astro.props;
+---
+
+<nav class="pagination" aria-label="Navegación de páginas">
+  {
+    prev ? (
+      <a href={prev} rel="prev" aria-label="Página anterior">
+        <span class="arrow">←</span>
+        <span class="label">Anterior</span>
+      </a>
+    ) : (
+      <span class="disabled" aria-label="Sin página anterior">
+        <span class="arrow">←</span>
+        <span class="label">Anterior</span>
+      </span>
+    )
+  }
+  <span class="page-number">
+    <span class="long">Página {currentPage} de {lastPage}</span>
+    <span class="short" aria-hidden="true">{currentPage}/{lastPage}</span>
+  </span>
+  {
+    next ? (
+      <a href={next} rel="next" aria-label="Página siguiente">
+        <span class="label">Siguiente</span>
+        <span class="arrow">→</span>
+      </a>
+    ) : (
+      <span class="disabled" aria-label="Sin página siguiente">
+        <span class="label">Siguiente</span>
+        <span class="arrow">→</span>
+      </span>
+    )
+  }
+</nav>
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(var(--gray-light), 0.4);
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .pagination a,
+  .pagination .disabled {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 0.75rem;
+    font-size: 1.2rem;
+    line-height: 1;
+    text-decoration: none;
+    background: rgba(var(--white), 0.8);
+    color: rgb(var(--gray-dark));
+    border: 1px solid rgba(var(--gray), 0.2);
+    border-radius: 6px;
+  }
+  .pagination .label {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .pagination a:hover {
+    background: rgb(var(--accent));
+    color: #fff;
+    border-color: rgb(var(--accent));
+  }
+  .pagination .disabled {
+    background: rgba(var(--gray-light), 0.5);
+    color: rgba(var(--gray), 0.5);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .page-number {
+    flex: 1;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgb(var(--gray-dark));
+  }
+  .page-number .short {
+    display: none;
+  }
+  @media (max-width: 400px) {
+    .pagination .label {
+      display: none;
+    }
+    .page-number .long {
+      display: none;
+    }
+    .page-number .short {
+      display: inline;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    .pagination {
+      background: rgba(var(--white), 0.06);
+    }
+    .pagination a,
+    .pagination .disabled {
+      background: rgba(var(--white), 0.1);
+      color: rgb(var(--black));
+    }
+    .pagination a:hover {
+      background: rgb(var(--accent));
+      color: #fff;
+    }
+  }
+</style>
