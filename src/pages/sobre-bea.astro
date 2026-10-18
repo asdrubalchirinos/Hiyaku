@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { SITE_TITLE } from "../consts";
+---
+
+<BaseLayout
+  title={`Sobre Bea - ${SITE_TITLE}`}
+  description="Quién es Bea y por qué escribe Hiyaku, un blog sobre el oficio de Growth Partner."
+>
+  <div class="container">
+    <article class="content">
+      <h1>Sobre Bea</h1>
+      <p class="example-note">
+        Texto de ejemplo. Sustitúyelo por la bio real de Bea cuando esté lista.
+      </p>
+      <p>
+        Bea trabaja como <strong>Growth Partner</strong>: se sienta del lado del
+        negocio para decidir qué crecer, qué dejar de lado y cómo convertir
+        intención en resultado. No es un departamento de marketing externo ni un
+        cargo interno más. Es una socia de crecimiento.
+      </p>
+      <p>
+        <strong>Hiyaku</strong> —del japonés 飛躍, «salto» o «impulso»— es el
+        nombre de este espacio. Aquí escribe sobre el oficio: lo que se ve desde
+        dentro cuando acompañas a otro Growth Partner, y lo que necesita oír un
+        dueño de negocio antes de buscar uno.
+      </p>
+      <p>
+        Los artículos se etiquetan para esos dos públicos. Si ya ejerces este
+        trabajo, empieza por <code>growth-partners</code>. Si buscas a alguien
+        que crezca contigo, empieza por <code>negocios</code>. Las demás
+        etiquetas se pueden combinar con cualquiera de las dos.
+      </p>
+      <p>
+        Este blog está en construcción. Los primeros textos son ejemplos de
+        formato, no el cuerpo de trabajo de Bea.
+      </p>
+    </article>
+    <aside>
+      <Sidebar />
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .container {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .content {
+    flex: 2;
+    max-width: 720px;
+  }
+  aside {
+    flex: 1;
+  }
+  .example-note {
+    padding: 0.75rem 1rem;
+    background: rgba(var(--accent), 0.1);
+    border-left: 4px solid rgb(var(--accent));
+    font-size: 0.95rem;
+  }
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+  }
+</style>

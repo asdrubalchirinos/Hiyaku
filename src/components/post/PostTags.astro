@@ -1,0 +1,53 @@
+---
+import { withBase } from "../../utils/paths";
+
+interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <nav class="tags" aria-label="Etiquetas del artículo">
+      {tags.map((tag) => (
+        <a href={withBase(`/tags/${tag}/`)} class="tag">
+          #{tag}
+        </a>
+      ))}
+    </nav>
+  )
+}
+
+<style>
+  .tags {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    background: rgba(var(--gray-light), 0.6);
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    text-decoration: none;
+    color: rgb(var(--gray-dark));
+    border: 1px solid rgba(var(--gray), 0.25);
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+  .tag:hover {
+    background: rgb(var(--accent));
+    color: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    .tag {
+      background: rgba(var(--gray-light), 0.35);
+      color: rgb(var(--black));
+    }
+  }
+</style>

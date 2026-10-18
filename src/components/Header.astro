@@ -1,0 +1,95 @@
+---
+import { SITE_TITLE } from "../consts";
+import { withBase } from "../utils/paths";
+
+const current = Astro.url.pathname.replace(/\/$/, "") || "/";
+const blogHref = withBase("/blog/");
+const aboutHref = withBase("/sobre-bea/");
+const isBlog = current === blogHref.replace(/\/$/, "") || current.startsWith(`${blogHref}`);
+const isAbout = current === aboutHref.replace(/\/$/, "");
+---
+
+<header>
+  <nav>
+    <div class="logo">
+      <a href={withBase("/")}>
+        <img src={withBase("/logo.svg")} alt={SITE_TITLE} class="logo-img" />
+      </a>
+    </div>
+    <p class="site-title"><a href={withBase("/")}>{SITE_TITLE}</a></p>
+    <div class="nav-links">
+      <a href={blogHref} class:list={[{ active: isBlog }]}>Artículos</a>
+      <a href={aboutHref} class:list={[{ active: isAbout }]}>Sobre Bea</a>
+    </div>
+  </nav>
+</header>
+
+<style>
+  header {
+    margin: 0;
+    padding: 0 1em;
+    background: rgb(var(--white));
+    box-shadow: 0 2px 8px rgba(var(--black), 5%);
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 1em 0;
+  }
+  .logo {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .logo-img {
+    height: 40px;
+    width: auto;
+    display: block;
+  }
+  .site-title {
+    flex: 2;
+    margin: 0;
+    font-size: 1em;
+    font-weight: 700;
+    text-align: center;
+    font-family: "Source Serif 4", Georgia, serif;
+  }
+  .site-title a,
+  .site-title a.active {
+    text-decoration: none;
+  }
+  .nav-links {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.25rem;
+  }
+  nav a {
+    padding: 1em 0.5em;
+    color: rgb(var(--black));
+    border-bottom: 4px solid transparent;
+    text-decoration: none;
+  }
+  nav a.active {
+    text-decoration: none;
+    border-bottom-color: rgb(var(--accent));
+  }
+  @media (max-width: 640px) {
+    .site-title {
+      display: none;
+    }
+    nav a {
+      padding: 0.75em 0.4em;
+      font-size: 0.95rem;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    header {
+      background: rgba(var(--white), 0.06);
+      backdrop-filter: blur(6px);
+    }
+  }
+</style>

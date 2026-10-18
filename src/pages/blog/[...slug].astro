@@ -1,0 +1,82 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostHero from "../../components/post/PostHero.astro";
+import PostHeader from "../../components/post/PostHeader.astro";
+import PostFooter from "../../components/post/PostFooter.astro";
+import { getPublishedPosts, excerptFromPost } from "../../utils/posts";
+import { withBase } from "../../utils/paths";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const heroSrc = post.data.heroImage ? withBase(post.data.heroImage) : undefined;
+const shareUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const description = excerptFromPost(post);
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={description}
+  image={post.data.heroImage}
+  author={post.data.author}
+  isArticle={true}
+  imageAlt={post.data.title}
+  publishDate={post.data.pubDate}
+  modifiedDate={post.data.updatedDate}
+  tags={post.data.tags}
+>
+  <div class="post">
+    <article>
+      <PostHero src={heroSrc} alt={post.data.title} draft={post.data.draft} />
+      <div class="prose">
+        <PostHeader
+          title={post.data.title}
+          subtitle={post.data.subtitle}
+          author={post.data.author}
+          pubDate={post.data.pubDate}
+          updatedDate={post.data.updatedDate}
+        />
+        {
+          post.data.draft && (
+            <p class="example-note">
+              Este es un artículo de ejemplo para mostrar el formato del blog.
+              Sustitúyelo cuando publiques el primero de verdad.
+            </p>
+          )
+        }
+        <Content />
+      </div>
+    </article>
+    <PostFooter url={shareUrl} title={post.data.title} tags={post.data.tags} />
+  </div>
+</BaseLayout>
+
+<style>
+  .prose {
+    max-width: 720px;
+    width: 100%;
+    margin: auto;
+    padding: 1em;
+    color: rgb(var(--gray-dark));
+  }
+  .example-note {
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(var(--accent), 0.1);
+    border-left: 4px solid rgb(var(--accent));
+    font-size: 0.95rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    .prose {
+      color: rgb(var(--black));
+    }
+  }
+</style>

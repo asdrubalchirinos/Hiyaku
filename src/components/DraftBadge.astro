@@ -1,0 +1,28 @@
+---
+interface Props {
+  draft?: boolean;
+}
+const { draft = false } = Astro.props;
+---
+
+{draft && <span class="badge badge-draft">Ejemplo</span>}
+
+<style>
+  .badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  .badge-draft {
+    background-color: rgb(var(--accent));
+    color: #fff;
+  }
+</style>

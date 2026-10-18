@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-label="">
+  <defs>
+    <linearGradient id="g" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4A6F3E"/>
+      <stop offset="100%" stop-color="#2F4A28"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#g)"/>
+  <circle cx="220" cy="140" r="140" fill="#E8D5C0" opacity="0.2"/>
+  <rect x="720" y="180" width="280" height="280" rx="24" fill="#FDF8F0" opacity="0.12"/>
+  <path d="M200 380c80 0 120-80 200-80s140 100 240 80 140-140 240-120" fill="none" stroke="#FDF8F0" stroke-width="16" stroke-linecap="round"/>
+  <text x="80" y="540" font-family="Georgia, serif" font-size="42" fill="#FDF8F0">negocios</text>
+</svg>

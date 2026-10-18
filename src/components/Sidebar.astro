@@ -1,0 +1,118 @@
+---
+import { AUDIENCE_TAGS } from "../consts";
+import { getPublishedPosts } from "../utils/posts";
+import { withBase } from "../utils/paths";
+
+const allPosts = await getPublishedPosts();
+const tags = [...new Set(allPosts.flatMap((post) => post.data.tags))];
+const audience = AUDIENCE_TAGS.filter((tag) => tags.includes(tag));
+const other = tags.filter((tag) => !AUDIENCE_TAGS.includes(tag as (typeof AUDIENCE_TAGS)[number]));
+---
+
+<div class="sidebar">
+  <div class="widget about">
+    <h3>Acerca de</h3>
+    <p>
+      Hiyaku es el espacio de Bea para escribir sobre el trabajo de Growth
+      Partner: el oficio, las decisiones y el crecimiento compartido.
+    </p>
+    <p>
+      <a href={withBase("/sobre-bea/")}>Leer más sobre Bea →</a>
+    </p>
+  </div>
+  {
+    audience.length > 0 && (
+      <div class="widget tags">
+        <h3>Públicos</h3>
+        <div class="tag-cloud">
+          {audience.map((tag) => (
+            <a href={withBase(`/tags/${tag}/`)} class="tag audience">
+              #{tag}
+            </a>
+          ))}
+        </div>
+      </div>
+    )
+  }
+  {
+    other.length > 0 && (
+      <div class="widget tags">
+        <h3>Etiquetas</h3>
+        <div class="tag-cloud">
+          {other.map((tag) => (
+            <a href={withBase(`/tags/${tag}/`)} class="tag">
+              #{tag}
+            </a>
+          ))}
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .sidebar {
+    position: sticky;
+    top: 2rem;
+  }
+  .widget {
+    background: rgb(var(--gray-light));
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+  .widget h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    border-bottom: 2px solid rgb(var(--accent));
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+  .widget p {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+  }
+  .widget p:last-child {
+    margin-bottom: 0;
+  }
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .tag {
+    background: rgba(var(--white), 0.7);
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: rgb(var(--gray-dark));
+    border: 1px solid rgba(var(--gray), 0.25);
+    line-height: 1.2;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+  .tag.audience {
+    border-color: rgba(var(--accent), 0.45);
+    color: rgb(var(--accent-dark));
+  }
+  .tag:hover,
+  .tag.audience:hover {
+    background: rgb(var(--accent));
+    color: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    .widget {
+      background: rgba(var(--white), 0.06);
+    }
+    .tag {
+      background: rgba(var(--gray-light), 0.35);
+      color: rgb(var(--black));
+    }
+    .tag.audience {
+      color: rgb(var(--accent));
+    }
+  }
+</style>

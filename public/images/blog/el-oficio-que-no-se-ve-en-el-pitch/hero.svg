@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-label="">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#A34A24"/>
+      <stop offset="100%" stop-color="#6E2A12"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#g)"/>
+  <circle cx="980" cy="120" r="160" fill="#E8B08C" opacity="0.25"/>
+  <path d="M160 420c140-40 240-160 270-300 30 140 110 230 360 270" fill="none" stroke="#FDF8F0" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="790" cy="160" r="22" fill="#FDF8F0"/>
+  <text x="80" y="540" font-family="Georgia, serif" font-size="42" fill="#FDF8F0">growth-partners</text>
+</svg>
